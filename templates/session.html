@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Collaborative Python</title>
+</head>
+
+<body>
+  <div id="message_holder"></div>
+
+  <form id="nameForm">
+    <input placeholder="Enter Name" label="name" id="name" type="text" />
+    <input label="Submit" type="submit" value="Set Name" />
+  </form>
+
+  <form id="messageForm">
+    <input type="text" class="message" id="message" placeholder="Messages" />
+    <input type="submit" />
+  </form>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  <script type="text/javascript">
+    var name = "Anonymous";
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // send info that user connected
+
+
+      // update the name based on input
+      document.getElementById('nameForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        name = document.getElementById('name').value;
+        socket.emit('join', {
+          "name": name
+        });
+      });
+
+      document.getElementById('messageForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let message = document.getElementById('message').value;
+        socket.emit('send message', {
+            "name":name,
+            "message":message
+        });
+      });
+
+      // someone has sent a message
+      socket.on('server response', function (msg) {
+        if (typeof msg.name !== 'undefined') {
+          let message_holder = document.getElementById('message_holder');
+          let div = document.createElement('div');
+          div.style.color = "black";
+          div.innerHTML = '<b style="color: #000">' + msg.name + '</b>: ' + msg.message;
+          message_holder.append(div);
+        }
+      });
+
+      socket.on('joined', function (json) {
+          let message_holder = document.getElementById('message_holder');
+          let div = document.createElement('div');
+          div.style.color = "black";
+          div.innerHTML = '<b style="color: #000">' + json.name + '</b> ' + "has joined";
+          message_holder.append(div);
+      });
+    });
+
+
+  </script>
+
+</body>
+
+</html>
