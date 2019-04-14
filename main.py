@@ -41,6 +41,25 @@ def parseResponse(message, directions):
     if message['message'] in allowed:
         directions.append(message['message'])
     return directions
+    
+def broadcastJoin(methods=['Get', 'POST']):
+    print('User has joined')
+
+@socketio.on('name change')
+def handle_my_custom_event1(json, methods=['GET', 'POST']):
+    print('User has changed name to: ' + str(json['name']))
+    socketio.emit('name changed', json, callback=messageReceived)
+
+@socketio.on('join')
+def handle_my_custom_event1(json, methods=['GET', 'POST']):
+    print('User has joined: ' + str(json['name']))
+    socketio.emit('joined', json, callback=messageReceived)
+
+@socketio.on('send message')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print('received message: ' + str(json))
+    socketio.emit('server response', json, callback=messageReceived)
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
