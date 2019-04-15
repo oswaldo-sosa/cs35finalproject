@@ -6,7 +6,7 @@ import json
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 socketio = SocketIO(app)
-
+directions = []
 
 @app.route('/')
 def sessions():
@@ -17,30 +17,43 @@ def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
 
 
-@socketio.on('my event')
-def handle_my_custom_event(json, methods=['GET', 'POST']):
-    print('received my event: ' + str(json))
-    socketio.emit('my response', json, callback=messageReceived)
-    directions = []
-    parseResponse(json, directions)
+@socketio.on('send message')
+def handle_messages(json, methods=['GET', 'POST']):
+    """
+        Handles user messages
+    """
+    print('received message: ' + str(json))
+    socketio.emit('server response', json, callback=messageReceived)
+    parseResponse(json)
     print("directions", directions)
 
-def parseResponse(message, directions):
+def parseResponse(message):
     """
     takes an input message, parses it so that only the following directions:
-    left, right, up, and down are accepted and put it in a list
+    left, right, up, and down are accepted and adds it to the list of directions
 
     Parameters: 
         message (dict): user input
-        directions (list): live directions list 
-
-    Returns: 
-        directions (list): list that contains only 'left', 'right', 'up', 'down'
     """
     allowed = ['left', 'right', 'up', 'down', 'l', 'r', 'u', 'd']
     if message['message'] in allowed:
         directions.append(message['message'])
-    return directions
+
+@socketio.on('name change')
+def handle_name_change(json, methods=['GET', 'POST']):
+    """
+        handles name changing
+    """
+    print('User has changed name to: ' + str(json['name']))
+    socketio.emit('name changed', json, callback=messageReceived)
+
+@socketio.on('join')
+def handle_join(json, methods=['GET', 'POST']):
+    """
+        handles user joining
+    """
+    print('User has joined: ' + str(json['name']))
+    socketio.emit('joined', json, callback=messageReceived)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
