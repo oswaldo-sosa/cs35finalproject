@@ -1,72 +1,35 @@
-<<<<<<< HEAD
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <title>Flask_Chat_App</title>
-  </head>
-  <body>
-
-    <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
-    <div class="message_holder"></div>
-
-    <form action="" method="POST">
-      <input type="text" class="username" placeholder="User Name"/>
-      <input type="text" class="message" placeholder="Messages"/>
-      <input type="submit"/>
-    </form>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-    <script type="text/javascript">
-      var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-      socket.on( 'connect', function() {
-        socket.emit( 'my event', {
-          data: 'User Connected'
-        } )
-        var form = $( 'form' ).on( 'submit', function( e ) {
-          e.preventDefault()
-          let user_name = $( 'input.username' ).val()
-          let user_input = $( 'input.message' ).val()
-          socket.emit( 'my event', {
-            user_name : user_name,
-            message : user_input
-          } )
-          $( 'input.message' ).val( '' ).focus()
-        } )
-      } )
-      socket.on( 'my response', function( msg ) {
-        console.log( msg )
-        if( typeof msg.user_name !== 'undefined' ) {
-          $( 'h3' ).remove()
-          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
-        }
-      })
-    </script>
-
-  </body>
-  </html>
-=======
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <title>Collaborative Python</title>
-</head>
+  <style>
+    html,
+    body {
+      margin: 0px;
+      padding: 0px;
+      height: 100%;
+    }
 
-<body>
-  <div id="message_holder"></div>
+    .flexbox {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  <form id="nameForm">
-    <input placeholder="Enter Name" label="name" id="name" type="text" />
-    <input label="Submit" type="submit" value="Set Name" />
-  </form>
+    #chat-box {
+      display: flex;
+      flex-direction: column-reverse;
+      border: 1px solid red;
+      width: 300px;
+      height: 300px;
+      overflow-y:auto;
+    }
 
-  <form id="messageForm">
-    <input type="text" class="message" id="message" placeholder="Messages" />
-    <input type="submit" />
-  </form>
+    p {
+      margin: 0;
+    }
+  </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
   <script type="text/javascript">
@@ -74,8 +37,6 @@
     var socket = io.connect('http://' + document.domain + ':' + location.port);
 
     document.addEventListener("DOMContentLoaded", function () {
-      // send info that user connected
-
 
       // update the name based on input
       document.getElementById('nameForm').addEventListener('submit', function (e) {
@@ -86,39 +47,58 @@
         });
       });
 
-      document.getElementById('messageForm').addEventListener('submit', function(e) {
+      // when user sends message emit it
+      document.getElementById('messageForm').addEventListener('submit', function (e) {
         e.preventDefault();
         let message = document.getElementById('message').value;
         socket.emit('send message', {
-            "name":name,
-            "message":message
+          "name": name,
+          "message": message
         });
       });
 
       // someone has sent a message
       socket.on('server response', function (msg) {
         if (typeof msg.name !== 'undefined') {
-          let message_holder = document.getElementById('message_holder');
-          let div = document.createElement('div');
-          div.style.color = "black";
-          div.innerHTML = '<b style="color: #000">' + msg.name + '</b>: ' + msg.message;
-          message_holder.append(div);
+          let message_holder = document.getElementById('chat-box');
+          let p = document.createElement('p');
+          p.style.color = "black";
+          p.innerHTML = '<b style="color: #000">' + msg.name + '</b>: ' + msg.message;
+          message_holder.prepend(p);
         }
       });
 
+      // when a new user has joined add messages
       socket.on('joined', function (json) {
-          let message_holder = document.getElementById('message_holder');
-          let div = document.createElement('div');
-          div.style.color = "black";
-          div.innerHTML = '<b style="color: #000">' + json.name + '</b> ' + "has joined";
-          message_holder.append(div);
+        let message_holder = document.getElementById('chat-box');
+        let p = document.createElement('p');
+        p.style.color = "black";
+        p.innerHTML = '<b style="color: #000">' + json.name + '</b> ' + "has joined";
+        message_holder.prepend(p);
       });
     });
 
 
   </script>
+</head>
 
+<body>
+  <div class="flexbox">
+    <h1>PacMan - ez game ez lyfe</h1>
+    <form id="nameForm">
+      <input placeholder="Enter Name" label="name" id="name" type="text" />
+      <input label="Submit" type="submit" value="Set Name" />
+    </form>
+
+    <div id="chat-box">
+      <p>Welcome to Pacman :)</p>
+    </div>
+
+    <form id="messageForm">
+      <input type="text" class="message" id="message" placeholder="Messages" />
+      <input type="submit" />
+    </form>
+  </div>
 </body>
 
 </html>
->>>>>>> chat-ui
