@@ -1,3 +1,6 @@
+from main import directions
+import json
+
 """Pacman, classic arcade game.
 
 Exercises
@@ -262,11 +265,12 @@ def main():
     writer.color('white')
     writer.write(state['score'])
     listen()
-    onkey(lambda: change(5, 0), 'Right')
-    onkey(lambda: change(-5, 0), 'Left')
-    onkey(lambda: change(0, 5), 'Up')
-    onkey(lambda: change(0, -5), 'Down')
+    # onkey(lambda: change(5, 0), 'Right')
+    # onkey(lambda: change(-5, 0), 'Left')
+    # onkey(lambda: change(0, 5), 'Up')
+    # onkey(lambda: change(0, -5), 'Down')
     instructions = create_path()
+    print(directions)
     #instructions = ['right']*50 + ['down']
     world()
     path_move(instructions)

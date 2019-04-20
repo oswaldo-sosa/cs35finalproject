@@ -55,5 +55,8 @@ def handle_join(json, methods=['GET', 'POST']):
     print('User has joined: ' + str(json['name']))
     socketio.emit('joined', json, callback=messageReceived)
 
+def justprint():
+    print("hello")
+
 if __name__ == '__main__':
     socketio.run(app, debug=True)
