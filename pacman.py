@@ -1,5 +1,6 @@
 from main import directions
 import json
+import socketio
 
 """Pacman, classic arcade game.
 
@@ -51,6 +52,17 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
+
+dirs = []
+
+# standard Python
+sio = socketio.Client()
+
+@sio.on('direction update')
+def on_connect(new_dirs):
+    global dirs
+    dirs = new_dirs
+    print("direction update: " + str(dirs))
 
 def square(x, y):
     "Draw square using path at (x, y)."
@@ -158,7 +170,8 @@ def path_move(directions):
         for point, course in ghosts:
             if abs(pacman - point) < 20:
                 return
-    
+
+    sio.emit('clear', {})
     new_directions = create_path()
     path_move(new_directions)
 
@@ -242,22 +255,19 @@ def movepac(dir):
 def create_path():
     """
     """
-    options = [ "left", "right", "up", "down"]
-    
-    path = []
-    for i in range(10):
-        path.append(choice(options))
-    
-    options2 = [True,False]
+    global dirs
+    if len(dirs) != 0:
+        olddirs = dirs
+        dirs = []
+        return olddirs
 
-    if choice(options2):
-        path = []
-    
-    return path
+    return []
 
 def main():
     """ run the game
     """
+    sio.connect('http://localhost:5000')
+    sio.emit('clear', {})
     setup(420, 420, 370, 0)
     hideturtle()
     tracer(False)
@@ -265,13 +275,7 @@ def main():
     writer.color('white')
     writer.write(state['score'])
     listen()
-    # onkey(lambda: change(5, 0), 'Right')
-    # onkey(lambda: change(-5, 0), 'Left')
-    # onkey(lambda: change(0, 5), 'Up')
-    # onkey(lambda: change(0, -5), 'Down')
     instructions = create_path()
-    print(directions)
-    #instructions = ['right']*50 + ['down']
     world()
     path_move(instructions)
     done()
