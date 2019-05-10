@@ -1,8 +1,8 @@
 Tutorial Source: [Medium Article](https://codeburst.io/building-your-first-chat-application-using-flask-in-7-minutes-f98de4adfa5d)
 
-Welcome to our collaborative online collection of games where users can interact together to make the next move in a game. Below are instructions for how to install and run our game. 
+Welcome to our collaborative online collection of games where users can interact together to make the next move in a game. Below are instructions for how to install and run our application and games. 
 
-Our team uses Python 3.6 on our backend. If Python 3.x is not your default Python version, you may have to use `pip3` instead of `pip` to install Python packages and `python3` instead of `python` to run the Python programs. We recommend the you check your location and version of Python by using `which pip` and `pip --version commands`.
+Our team used Python 3.6 on our backend. If Python 3.x is not your default Python version, you may have to use `pip3` instead of `pip` to install Python packages and `python3` instead of `python` to run the Python programs. We recommend you check the location and version of Python you have installed, by using `which pip` and `pip --version commands`.
 
 ### Installation
 
@@ -30,6 +30,6 @@ or
 # Running Pacman Game
 > python pacman.py
 ```
-For more information on how to play Snake or Pacman, visit the [library](http://www.grantjenks.com/docs/freegames/) our team used. 
+For more information on how to play the Snake or Pacman games, visit the [library](http://www.grantjenks.com/docs/freegames/) our team used. 
 
 
