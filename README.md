@@ -1,8 +1,8 @@
 Tutorial Source: [Medium Article](https://codeburst.io/building-your-first-chat-application-using-flask-in-7-minutes-f98de4adfa5d)
 
-Welcome to our collaborate online collection of game(s) where users can interact together to make the next move in the game. Below are instructions for how to install and run our game. 
+Welcome to our collaborative online collection of games where users can interact together to make the next move in a game. Below are instructions for how to install and run our game. 
 
-Our team uses Python 3.6 in our backend. If Python 3.x is not the default Python version, the users may have to use `pip3` instead of `pip` to install Python packages and `python3` instead of `python` to run Python. We recommend the users check their location and version of Python they are currently using by using which pip and pip --version commands.
+Our team uses Python 3.6 on our backend. If Python 3.x is not your default Python version, you may have to use `pip3` instead of `pip` to install Python packages and `python3` instead of `python` to run the Python programs. We recommend the you check your location and version of Python by using `which pip` and `pip --version commands`.
 
 ### Installation
 
