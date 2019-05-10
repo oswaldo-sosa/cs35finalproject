@@ -30,5 +30,6 @@ or
 # Running Pacman Game
 > python pacman.py
 ```
+For more information on how to play Snake or Pacman, visit the [library](http://www.grantjenks.com/docs/freegames/) our team used. 
 
 
