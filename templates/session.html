@@ -7,8 +7,9 @@
     html,
     body {
       margin: 0px;
-      padding: 0px;
+      padding: 10px;
       height: 100%;
+      background-color: black;
     }
 
     .flexbox {
@@ -18,12 +19,20 @@
     }
 
     #chat-box {
+      background-color: white;
       display: flex;
       flex-direction: column-reverse;
-      border: 1px solid red;
+      border: 10px solid white;
       width: 300px;
       height: 300px;
       overflow-y:auto;
+      padding-bottom: 10px; 
+    }
+
+    #gif {
+      height: 150px;
+      align-content: center;
+      width: -webkit-fill-available;
     }
 
     p {
@@ -55,6 +64,7 @@
           "name": name,
           "message": message
         });
+        document.getElementById('message').value = "";
       });
 
       // someone has sent a message
@@ -84,7 +94,7 @@
 
 <body>
   <div class="flexbox">
-    <h1>PacMan - ez game ez lyfe</h1>
+    <h1>PacMan</h1>
     <form id="nameForm">
       <input placeholder="Enter Name" label="name" id="name" type="text" />
       <input label="Submit" type="submit" value="Set Name" />
@@ -98,6 +108,9 @@
       <input type="text" class="message" id="message" placeholder="Messages" />
       <input type="submit" />
     </form>
+    <div id="gif">
+      <img src="https://i.pinimg.com/originals/0a/d1/d7/0ad1d7cef24a77e15099915897edb089.gif"/>
+    </div>
   </div>
 </body>
 

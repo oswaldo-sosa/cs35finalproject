@@ -16,6 +16,11 @@ def sessions():
 def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
 
+@socketio.on('clear')
+def handle_clear(json, methods=['GET', 'POST']):
+    global directions
+    directions = []
+    print(directions)
 
 @socketio.on('send message')
 def handle_messages(json, methods=['GET', 'POST']):
@@ -23,8 +28,12 @@ def handle_messages(json, methods=['GET', 'POST']):
         Handles user messages
     """
     print('received message: ' + str(json))
+    # respond to people with message
     socketio.emit('server response', json, callback=messageReceived)
     parseResponse(json)
+
+    # send direction update to game
+    socketio.emit('direction update', directions)
     print("directions", directions)
 
 def parseResponse(message):
@@ -35,6 +44,7 @@ def parseResponse(message):
     Parameters: 
         message (dict): user input
     """
+    global directions
     allowed = ['left', 'right', 'up', 'down', 'l', 'r', 'u', 'd']
     if message['message'] in allowed:
         directions.append(message['message'])
@@ -54,6 +64,9 @@ def handle_join(json, methods=['GET', 'POST']):
     """
     print('User has joined: ' + str(json['name']))
     socketio.emit('joined', json, callback=messageReceived)
+
+def justprint():
+    print("hello")
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
